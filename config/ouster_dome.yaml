@@ -1,0 +1,8 @@
+ouster_dome:
+  horizontal_samples: 2048
+  vertical_samples: 128
+  horizontal_fov: 360.0
+  vertical_fov: 90.0
+  range_min: 0.2
+  range_max: 200.0
+  rotation_rate: 20.0

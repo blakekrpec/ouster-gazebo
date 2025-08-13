@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="skid_steer_robot">
+
+  <!-- Include ouster lidar macros -->
+  <xacro:include filename="$(find ouster_gazebo)/urdf/ouster_common.xacro"/>
+  <xacro:include filename="$(find ouster_gazebo)/urdf/ouster_puck.urdf.xacro"/>
+  
+  <!-- Optional chassis and wheel meshes -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.6 0.4 0.2"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 0.4 0.2"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="10.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+    </inertial>
+  </link>
+
+  <!-- Four wheels, fixed joints with rotation axis -->
+  <link name="wheel_front_left_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="wheel_front_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_front_left_link"/>
+    <origin xyz="0.25 0.15 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="wheel_front_right_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="wheel_front_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_front_right_link"/>
+    <origin xyz="0.25 -0.15 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="wheel_rear_left_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="wheel_rear_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_rear_left_link"/>
+    <origin xyz="-0.25 0.15 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="wheel_rear_right_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.05"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+    </inertial>
+  </link>
+  <joint name="wheel_rear_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_rear_right_link"/>
+    <origin xyz="-0.25 -0.15 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Add the 4 ouster puck lidars using the existing xacro macro -->
+  <xacro:property name="ouster_config" value="$(find ouster_gazebo)/config/ouster_puck.yaml"/>
+
+  <!-- Front Left Lidar -->
+  <joint name="ouster_puck_fl_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ouster_puck_fl_link"/>
+    <origin xyz="0.3 0.2 0.3" rpy="0 0 0"/>
+  </joint>
+  <xacro:ouster_puck name="ouster_puck_fl" config_file="${ouster_config}"/>
+
+  <!-- Front Right Lidar -->
+  <joint name="ouster_puck_fr_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ouster_puck_fr_link"/>
+    <origin xyz="0.3 -0.2 0.3" rpy="0 0 0"/>
+  </joint>
+  <xacro:ouster_puck name="ouster_puck_fr" config_file="${ouster_config}"/>
+
+  <!-- Rear Left Lidar -->
+  <joint name="ouster_puck_rl_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ouster_puck_rl_link"/>
+    <origin xyz="-0.3 0.2 0.3" rpy="0 0 0"/>
+  </joint>
+  <xacro:ouster_puck name="ouster_puck_rl" config_file="${ouster_config}"/>
+
+  <!-- Rear Right Lidar -->
+  <joint name="ouster_puck_rr_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="ouster_puck_rr_link"/>
+    <origin xyz="-0.3 -0.2 0.3" rpy="0 0 0"/>
+  </joint>
+  <xacro:ouster_puck name="ouster_puck_rr" config_file="${ouster_config}"/>
+
+  <!-- Gazebo ros2_control plugin -->
+  <gazebo>
+    <plugin name="ros2_control" filename="libgazebo_ros2_control.so"/>
+  </gazebo>
+
+</robot>

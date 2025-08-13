@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ouster_gazebo</name>
+  <version>0.0.1</version>
+  <description>URDF/Xacro definitions and meshes for emulated Ouster sensors in Gazebo</description>
+
+  <maintainer email="blake.krpec@yahoo.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rclcpp</build_depend>
+  <build_depend>xacro</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
